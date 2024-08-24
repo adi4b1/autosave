@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: aquamarine;
+        }
+        
+        #inputArea{
+            height:200px;
+            width:500px;
+            margin:100px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div>
+        <div id="mainBody" align="center">
+            <h1>Autosave Textarea content</h1>
+            <textarea name="textarea" id="inputArea" placeholder="enter some text for autosave"></textarea>
+            <h3 id="infomess"></h3>
+        </div>
+    </div>
+
+    <script>
+        let inp=document.getElementById('inputArea')
+let infomess=document.getElementById('infomess')
+
+infomess.textContent=''
+function getData(content){
+    
+    console.log(content);
+    
+    localStorage.setItem('savecontent',content)
+    
+    infomess.textContent=`Your content is autosaved in local storage`
+    
+
+}
+
+inp.addEventListener('keypress',(e)=>{
+    infomess.textContent=`autosave started......`
+})
+
+const debounce=(fn,t)=>{
+    let timer;
+    return function(...content){
+        clearInterval(timer)
+        timer=setTimeout(()=>{
+            fn.apply(this,content)
+        },t)
+    }
+}
+
+
+const debou=debounce(getData,1000)
+
+
+inp.addEventListener('input',(e)=>{
+    debou(e.target.value)
+})
+    </script>
+</body>
+</html>
